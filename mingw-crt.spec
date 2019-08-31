@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : mingw-crt
 Version  : 6.0.0
-Release  : 6
+Release  : 7
 URL      : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source0  : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source1 : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
@@ -21,6 +21,9 @@ BuildRequires : mingw-crt-dev
 BuildRequires : mingw-gcc
 BuildRequires : sed
 BuildRequires : strace
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 
 %description
 This directory contains source for a library of binary -> decimal
@@ -56,7 +59,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567276787
+export SOURCE_DATE_EPOCH=1567279107
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O3 -g -fopt-info-vec "
@@ -80,7 +83,7 @@ DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool" \
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1567276787
+export SOURCE_DATE_EPOCH=1567279107
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mingw-crt
 cp mingw-w64-crt/profile/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-crt_profile_COPYING
