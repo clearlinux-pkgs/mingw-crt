@@ -1,0 +1,7 @@
+Configure miss: whether to build the crt
+Configure miss: whether to build the optional libraries
+Configure miss: whether to build the optional tools
+Configure miss: whether to rebuild headers with widl
+Configure miss: whether to build a w32api package for Cygwin
+Configure miss: if installing idl files is enabled
+Configure miss: whether to enable the secure API
