@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : mingw-crt
 Version  : 6.0.0
-Release  : 10
+Release  : 11
 URL      : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source0  : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source1 : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
@@ -62,16 +62,6 @@ Group: Default
 license components for the mingw-crt package.
 
 
-%package staticdev
-Summary: staticdev components for the mingw-crt package.
-Group: Default
-Requires: mingw-crt-dev = %{version}-%{release}
-Requires: mingw-crt-dev = %{version}-%{release}
-
-%description staticdev
-staticdev components for the mingw-crt package.
-
-
 %prep
 %setup -q -n mingw-w64-v6.0.0
 
@@ -80,7 +70,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567283488
+export SOURCE_DATE_EPOCH=1567283661
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O3 -g -fopt-info-vec "
@@ -92,6 +82,7 @@ export CXXFLAGS="$CXXFLAGS -fno-lto "
 %configure  --disable-lib32 \
 --host=x86_64-pc-linux \
 --target=x86_64-w64-mingw32 \
+--libdir=/usr/mingw/lib \
 --includedir=/usr/mingw/include/ \
 CFLAGS="$CFLAGS -I/usr/mingw/include/ -Wno-expansion-to-defined" \
 CC="/usr/bin/x86_64-w64-mingw32-gcc" \
@@ -107,7 +98,7 @@ DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool" \
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1567283488
+export SOURCE_DATE_EPOCH=1567283661
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mingw-crt
 cp mingw-w64-crt/profile/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-crt_profile_COPYING
@@ -574,6 +565,7 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 /usr/mingw/lib/liblz32.a
 /usr/mingw/lib/libm.a
 /usr/mingw/lib/libmag_hook.a
+/usr/mingw/lib/libmangle.a
 /usr/mingw/lib/libmapi32.a
 /usr/mingw/lib/libmapistub.a
 /usr/mingw/lib/libmcastmib.a
@@ -2538,7 +2530,3 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 /usr/share/package-licenses/mingw-crt/mingw-w64-tools_genlib_COPYING
 /usr/share/package-licenses/mingw-crt/mingw-w64-tools_genpeimg_COPYING
 /usr/share/package-licenses/mingw-crt/mingw-w64-tools_genstubdll_COPYING
-
-%files staticdev
-%defattr(-,root,root,-)
-/usr/lib64/libmangle.a
