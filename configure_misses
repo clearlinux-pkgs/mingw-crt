@@ -1,9 +1,12 @@
+Configure miss: x86_64-pc-linux-strip
 Configure miss: whether to build the optional libraries
 Configure miss: whether to build the optional tools
+Configure miss: x86_64-pc-linux-strip
 Configure miss: whether to rebuild headers with widl
 Configure miss: whether to build a w32api package for Cygwin
 Configure miss: if installing idl files is enabled
 Configure miss: whether to enable the secure API
+Configure miss: x86_64-pc-linux-strip
 Configure miss: /usr/bin/x86_64-w64-mingw32-gcc option to accept ISO C89
 Configure miss: whether to build a w32api package for Cygwin
 Configure miss: whether to build the Win32 libraries
