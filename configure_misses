@@ -14,5 +14,3 @@ Configure miss: whether to enable globbing
 Configure miss: whether to enable private exports
 Configure miss: whether to enable delay import libs
 Configure miss: whether to enable experimental features
-Configure miss: whether the linker provides __CTOR_LIST__
-Configure miss: _mingw_mac.h presence

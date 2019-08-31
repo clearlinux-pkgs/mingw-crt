@@ -1,3 +1,4 @@
 mkdir -p %{buildroot}/usr/mingw/lib
 mv %{buildroot}/usr/lib/*.a  %{buildroot}/usr/mingw/lib
 mv %{buildroot}/usr/lib/*.o  %{buildroot}/usr/mingw/lib
+for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $i ; done
