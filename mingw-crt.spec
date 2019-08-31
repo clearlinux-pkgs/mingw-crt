@@ -7,13 +7,14 @@
 %define keepstatic 1
 Name     : mingw-crt
 Version  : 6.0.0
-Release  : 8
+Release  : 9
 URL      : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source0  : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source1 : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 MIT
+Requires: mingw-crt-bin = %{version}-%{release}
 Requires: mingw-crt-license = %{version}-%{release}
 BuildRequires : mingw-binutils
 BuildRequires : mingw-crt
@@ -32,9 +33,19 @@ and extended-precision IEEE binary floating-point arithmetic, and
 other IEEE-like binary floating-point, including "double double",
 as in
 
+%package bin
+Summary: bin components for the mingw-crt package.
+Group: Binaries
+Requires: mingw-crt-license = %{version}-%{release}
+
+%description bin
+bin components for the mingw-crt package.
+
+
 %package dev
 Summary: dev components for the mingw-crt package.
 Group: Development
+Requires: mingw-crt-bin = %{version}-%{release}
 Provides: mingw-crt-devel = %{version}-%{release}
 Requires: mingw-crt = %{version}-%{release}
 Requires: mingw-crt = %{version}-%{release}
@@ -59,7 +70,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567282804
+export SOURCE_DATE_EPOCH=1567283123
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O3 -g -fopt-info-vec "
@@ -80,11 +91,12 @@ AR="/usr/bin/x86_64-w64-mingw32-ar" \
 --with-sysroot=/usr/x86_64-w64-mingw32/sys-root \
 RANLIB="/usr/bin/x86_64-w64-mingw32-ranlib" \
 DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool" \
---enable-lib64
+--enable-lib64 \
+--with-tools=all
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1567282804
+export SOURCE_DATE_EPOCH=1567283123
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mingw-crt
 cp mingw-w64-crt/profile/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-crt_profile_COPYING
@@ -1034,6 +1046,11 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 /usr/mingw/lib/libxinput9_1_0.a
 /usr/mingw/lib/libzoneoc.a
 /usr/mingw/lib/txtmode.o
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/gendef.exe
+/usr/bin/genidl.exe
 
 %files dev
 %defattr(-,root,root,-)

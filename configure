@@ -11,4 +11,5 @@ AR="/usr/bin/x86_64-w64-mingw32-ar"
 RANLIB="/usr/bin/x86_64-w64-mingw32-ranlib"
 DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool"
 --enable-lib64 
+--with-tools=all
 #--with-libraries=winpthreads
