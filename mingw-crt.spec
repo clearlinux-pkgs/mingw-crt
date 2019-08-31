@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : mingw-crt
 Version  : 6.0.0
-Release  : 4
+Release  : 5
 URL      : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source0  : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source1 : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
@@ -56,7 +56,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567267739
+export SOURCE_DATE_EPOCH=1567273006
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O3 -g -fopt-info-vec "
@@ -68,7 +68,7 @@ export CXXFLAGS="$CXXFLAGS -fno-lto "
 %configure  --disable-lib32 \
 --target=x86_64-w64-mingw32 \
 --includedir=/usr/mingw/include/ \
-CFLAGS="$CFLAGS -I/usr/include/mingw/ -Wno-expansion-to-defined" \
+CFLAGS="$CFLAGS -I/usr/mingw/include/ -Wno-expansion-to-defined" \
 CC="/usr/bin/x86_64-w64-mingw32-gcc" \
 C_INCLUDE_PATH="/usr/include/mingw/" \
 AS="/usr/bin/x86_64-w64-mingw32-as" \
@@ -80,7 +80,7 @@ DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool" \
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1567267739
+export SOURCE_DATE_EPOCH=1567273006
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mingw-crt
 cp mingw-w64-crt/profile/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-crt_profile_COPYING
