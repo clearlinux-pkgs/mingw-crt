@@ -1,6 +1,6 @@
 --disable-lib32 
 --target=x86_64-w64-mingw32 
---includedir=/usr/include/mingw/ 
+--includedir=/usr/mingw/include/
 CFLAGS="$CFLAGS -I/usr/include/mingw/ -Wno-expansion-to-defined" 
 CC="/usr/bin/x86_64-w64-mingw32-gcc" 
 C_INCLUDE_PATH="/usr/include/mingw/" 
