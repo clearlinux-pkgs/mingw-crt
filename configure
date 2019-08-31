@@ -1,1 +1,12 @@
---disable-lib32 --target=x86_64-w64-mingw32 --without-crt --includedir=/usr/include/mingw/
+--disable-lib32 
+--target=x86_64-w64-mingw32 
+--includedir=/usr/include/mingw/ 
+CFLAGS="$CFLAGS -I/usr/include/mingw/ -Wno-expansion-to-defined" 
+CC="/usr/bin/x86_64-w64-mingw32-gcc" 
+C_INCLUDE_PATH="/usr/include/mingw/" 
+AS="/usr/bin/x86_64-w64-mingw32-as"  
+AR="/usr/bin/x86_64-w64-mingw32-ar"  
+--with-sysroot=/usr/x86_64-w64-mingw32/sys-root  
+RANLIB="/usr/bin/x86_64-w64-mingw32-ranlib"
+DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool"
+--enable-lib64 

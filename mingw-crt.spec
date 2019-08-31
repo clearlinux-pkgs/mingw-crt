@@ -6,7 +6,7 @@
 #
 Name     : mingw-crt
 Version  : 6.0.0
-Release  : 1
+Release  : 2
 URL      : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source0  : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source1 : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
@@ -15,8 +15,11 @@ Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.1 MIT
 Requires: mingw-crt-license = %{version}-%{release}
 BuildRequires : mingw-binutils
+BuildRequires : mingw-crt
+BuildRequires : mingw-crt-dev
 BuildRequires : mingw-gcc
 BuildRequires : sed
+BuildRequires : strace
 
 %description
 This directory contains source for a library of binary -> decimal
@@ -52,28 +55,31 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567223550
+export SOURCE_DATE_EPOCH=1567265563
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
-export AR=gcc-ar
-export RANLIB=gcc-ranlib
-export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
-%configure --disable-static --disable-lib32 --target=x86_64-w64-mingw32 --without-crt --includedir=/usr/include/mingw/
-make  %{?_smp_mflags}
-
-%check
-export LANG=C.UTF-8
-export http_proxy=http://127.0.0.1:9/
-export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+export CFLAGS="-O3 -g -fopt-info-vec "
+unset LDFLAGS
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+%configure --disable-static --disable-lib32 \
+--target=x86_64-w64-mingw32 \
+--includedir=/usr/include/mingw/ \
+CFLAGS="$CFLAGS -I/usr/include/mingw/ -Wno-expansion-to-defined" \
+CC="/usr/bin/x86_64-w64-mingw32-gcc" \
+C_INCLUDE_PATH="/usr/include/mingw/" \
+AS="/usr/bin/x86_64-w64-mingw32-as" \
+AR="/usr/bin/x86_64-w64-mingw32-ar" \
+--with-sysroot=/usr/x86_64-w64-mingw32/sys-root \
+RANLIB="/usr/bin/x86_64-w64-mingw32-ranlib" \
+DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool" \
+--enable-lib64
+make
 
 %install
-export SOURCE_DATE_EPOCH=1567223550
+export SOURCE_DATE_EPOCH=1567265563
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mingw-crt
 cp mingw-w64-crt/profile/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-crt_profile_COPYING
@@ -90,6 +96,23 @@ cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mi
 
 %files
 %defattr(-,root,root,-)
+/usr/lib/CRT_fp10.o
+/usr/lib/CRT_fp8.o
+/usr/lib/CRT_glob.o
+/usr/lib/CRT_noglob.o
+/usr/lib/binmode.o
+/usr/lib/crt1.o
+/usr/lib/crt1u.o
+/usr/lib/crt2.o
+/usr/lib/crt2u.o
+/usr/lib/crtbegin.o
+/usr/lib/crtend.o
+/usr/lib/dllcrt1.o
+/usr/lib/dllcrt2.o
+/usr/lib/gcrt0.o
+/usr/lib/gcrt1.o
+/usr/lib/gcrt2.o
+/usr/lib/txtmode.o
 
 %files dev
 %defattr(-,root,root,-)
@@ -151,8 +174,10 @@ cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mi
 /usr/include/mingw/af_irda.h
 /usr/include/mingw/afxres.h
 /usr/include/mingw/agtctl.h
+/usr/include/mingw/agtctl_i.c
 /usr/include/mingw/agterr.h
 /usr/include/mingw/agtsvr.h
+/usr/include/mingw/agtsvr_i.c
 /usr/include/mingw/alg.h
 /usr/include/mingw/alink.h
 /usr/include/mingw/amaudio.h
@@ -215,11 +240,14 @@ cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mi
 /usr/include/mingw/cchannel.h
 /usr/include/mingw/cderr.h
 /usr/include/mingw/cdoex.h
+/usr/include/mingw/cdoex_i.c
 /usr/include/mingw/cdoexerr.h
 /usr/include/mingw/cdoexm.h
+/usr/include/mingw/cdoexm_i.c
 /usr/include/mingw/cdoexstr.h
 /usr/include/mingw/cdonts.h
 /usr/include/mingw/cdosys.h
+/usr/include/mingw/cdosys_i.c
 /usr/include/mingw/cdosyserr.h
 /usr/include/mingw/cdosysstr.h
 /usr/include/mingw/celib.h
@@ -580,6 +608,7 @@ cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mi
 /usr/include/mingw/ehstorapi.h
 /usr/include/mingw/elscore.h
 /usr/include/mingw/emostore.h
+/usr/include/mingw/emostore_i.c
 /usr/include/mingw/emptyvc.h
 /usr/include/mingw/endpointvolume.h
 /usr/include/mingw/errhandlingapi.h
@@ -717,6 +746,7 @@ cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mi
 /usr/include/mingw/iiisext.h
 /usr/include/mingw/iimgctx.h
 /usr/include/mingw/iiscnfg.h
+/usr/include/mingw/iisext_i.c
 /usr/include/mingw/iisrsta.h
 /usr/include/mingw/iketypes.h
 /usr/include/mingw/ilogobj.hxx
@@ -952,10 +982,12 @@ cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mi
 /usr/include/mingw/msxml2did.h
 /usr/include/mingw/msxmldid.h
 /usr/include/mingw/mtsadmin.h
+/usr/include/mingw/mtsadmin_i.c
 /usr/include/mingw/mtsevents.h
 /usr/include/mingw/mtsgrp.h
 /usr/include/mingw/mtx.h
 /usr/include/mingw/mtxadmin.h
+/usr/include/mingw/mtxadmin_i.c
 /usr/include/mingw/mtxattr.h
 /usr/include/mingw/mtxdm.h
 /usr/include/mingw/muiload.h
@@ -1198,6 +1230,8 @@ cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mi
 /usr/include/mingw/scardmgr.h
 /usr/include/mingw/scardsrv.h
 /usr/include/mingw/scardssp.h
+/usr/include/mingw/scardssp_i.c
+/usr/include/mingw/scardssp_p.c
 /usr/include/mingw/scesvc.h
 /usr/include/mingw/schannel.h
 /usr/include/mingw/schedule.h
@@ -1366,6 +1400,7 @@ cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mi
 /usr/include/mingw/tspi.h
 /usr/include/mingw/tssbx.h
 /usr/include/mingw/tsuserex.h
+/usr/include/mingw/tsuserex_i.c
 /usr/include/mingw/tuner.h
 /usr/include/mingw/tvout.h
 /usr/include/mingw/txcoord.h
