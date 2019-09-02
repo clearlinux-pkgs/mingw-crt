@@ -1,0 +1,84 @@
+--- mingw-w64-v6.0.0/mingw-w64-libraries/winpthreads/configure~	2018-09-14 14:16:43.000000000 +0000
++++ mingw-w64-v6.0.0/mingw-w64-libraries/winpthreads/configure	2019-09-01 23:50:52.245155896 +0000
+@@ -10978,81 +10978,6 @@
+ 
+ 
+ 
+-#
+-# Do we need to explicitly link libc?
+-#
+-case "x$archive_cmds_need_lc" in
+-x|xyes)
+-  # Assume -lc should be added
+-  archive_cmds_need_lc=yes
+-
+-  if test yes,yes = "$GCC,$enable_shared"; then
+-    case $archive_cmds in
+-    *'~'*)
+-      # FIXME: we may have to deal with multi-command sequences.
+-      ;;
+-    '$CC '*)
+-      # Test whether the compiler implicitly links with -lc since on some
+-      # systems, -lgcc has to come before -lc. If gcc already passes -lc
+-      # to ld, don't add -lc before -lgcc.
+-      { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether -lc should be explicitly linked in" >&5
+-$as_echo_n "checking whether -lc should be explicitly linked in... " >&6; }
+-if ${lt_cv_archive_cmds_need_lc+:} false; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  $RM conftest*
+-	echo "$lt_simple_compile_test_code" > conftest.$ac_ext
+-
+-	if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
+-  (eval $ac_compile) 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; } 2>conftest.err; then
+-	  soname=conftest
+-	  lib=conftest
+-	  libobjs=conftest.$ac_objext
+-	  deplibs=
+-	  wl=$lt_prog_compiler_wl
+-	  pic_flag=$lt_prog_compiler_pic
+-	  compiler_flags=-v
+-	  linker_flags=-v
+-	  verstring=
+-	  output_objdir=.
+-	  libname=conftest
+-	  lt_save_allow_undefined_flag=$allow_undefined_flag
+-	  allow_undefined_flag=
+-	  if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$archive_cmds 2\>\&1 \| $GREP \" -lc \" \>/dev/null 2\>\&1\""; } >&5
+-  (eval $archive_cmds 2\>\&1 \| $GREP \" -lc \" \>/dev/null 2\>\&1) 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; }
+-	  then
+-	    lt_cv_archive_cmds_need_lc=no
+-	  else
+-	    lt_cv_archive_cmds_need_lc=yes
+-	  fi
+-	  allow_undefined_flag=$lt_save_allow_undefined_flag
+-	else
+-	  cat conftest.err 1>&5
+-	fi
+-	$RM conftest*
+-
+-fi
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $lt_cv_archive_cmds_need_lc" >&5
+-$as_echo "$lt_cv_archive_cmds_need_lc" >&6; }
+-      archive_cmds_need_lc=$lt_cv_archive_cmds_need_lc
+-      ;;
+-    esac
+-  fi
+-  ;;
+-esac
+-
+-
+-
+-
+-
+-
+-
+ 
+ 
+ 

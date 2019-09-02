@@ -4,13 +4,19 @@
 --libdir=/usr/mingw/lib
 --includedir=/usr/mingw/include/
 CFLAGS="$CFLAGS -I/usr/mingw/include/ -Wno-expansion-to-defined" 
+WINDRESFLAGS=" -I/usr/mingw/include/"
+RC="/usr/bin/x86_64-w64-mingw32-windres"
 CC="/usr/bin/x86_64-w64-mingw32-gcc" 
 C_INCLUDE_PATH="/usr/include/mingw/" 
 AS="/usr/bin/x86_64-w64-mingw32-as"  
 AR="/usr/bin/x86_64-w64-mingw32-ar"  
+NM="/usr/bin/x86_64-w64-mingw32-nm"  
+STRIP="/usr/bin/x86_64-w64-mingw32-strip"  
+OBJDUMP="/usr/bin/x86_64-w64-mingw32-objdump"  
 --with-sysroot=/usr/x86_64-w64-mingw32/sys-root  
 RANLIB="/usr/bin/x86_64-w64-mingw32-ranlib"
 DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool"
 --enable-lib64 
 --with-tools=all
---with-libraries=libmangle,pseh
+--with-libraries=all
+--disable-shared

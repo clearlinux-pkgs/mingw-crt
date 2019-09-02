@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : mingw-crt
 Version  : 6.0.0
-Release  : 12
+Release  : 13
 URL      : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source0  : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source1 : https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
@@ -25,6 +25,7 @@ BuildRequires : strace
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
+Patch1: build.patch
 
 %description
 This directory contains source for a library of binary -> decimal
@@ -64,13 +65,14 @@ license components for the mingw-crt package.
 
 %prep
 %setup -q -n mingw-w64-v6.0.0
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567380134
+export SOURCE_DATE_EPOCH=1567433616
 # -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O3 -g -fopt-info-vec "
@@ -85,20 +87,26 @@ export CXXFLAGS="$CXXFLAGS -fno-lto "
 --libdir=/usr/mingw/lib \
 --includedir=/usr/mingw/include/ \
 CFLAGS="$CFLAGS -I/usr/mingw/include/ -Wno-expansion-to-defined" \
+WINDRESFLAGS=" -I/usr/mingw/include/" \
+RC="/usr/bin/x86_64-w64-mingw32-windres" \
 CC="/usr/bin/x86_64-w64-mingw32-gcc" \
 C_INCLUDE_PATH="/usr/include/mingw/" \
 AS="/usr/bin/x86_64-w64-mingw32-as" \
 AR="/usr/bin/x86_64-w64-mingw32-ar" \
+NM="/usr/bin/x86_64-w64-mingw32-nm" \
+STRIP="/usr/bin/x86_64-w64-mingw32-strip" \
+OBJDUMP="/usr/bin/x86_64-w64-mingw32-objdump" \
 --with-sysroot=/usr/x86_64-w64-mingw32/sys-root \
 RANLIB="/usr/bin/x86_64-w64-mingw32-ranlib" \
 DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool" \
 --enable-lib64 \
 --with-tools=all \
---with-libraries=libmangle,pseh
+--with-libraries=all \
+--disable-shared
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1567380134
+export SOURCE_DATE_EPOCH=1567433616
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mingw-crt
 cp mingw-w64-crt/profile/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-crt_profile_COPYING
@@ -778,6 +786,7 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 /usr/mingw/lib/libpschdprf.a
 /usr/mingw/lib/libpstorec.a
 /usr/mingw/lib/libpstorsvc.a
+/usr/mingw/lib/libpthread.a
 /usr/mingw/lib/libqmgr.a
 /usr/mingw/lib/libqosname.a
 /usr/mingw/lib/libquartz.a
@@ -989,6 +998,7 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 /usr/mingw/lib/libwininet.a
 /usr/mingw/lib/libwinipsec.a
 /usr/mingw/lib/libwinmm.a
+/usr/mingw/lib/libwinpthread.a
 /usr/mingw/lib/libwinrnr.a
 /usr/mingw/lib/libwinscard.a
 /usr/mingw/lib/libwinspool.a
@@ -2053,6 +2063,8 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 /usr/mingw/include/pshpack8.h
 /usr/mingw/include/pshpck16.h
 /usr/mingw/include/pstore.h
+/usr/mingw/include/pthread.h
+/usr/mingw/include/pthread_compat.h
 /usr/mingw/include/pthread_signal.h
 /usr/mingw/include/pthread_time.h
 /usr/mingw/include/pthread_unistd.h
@@ -2120,6 +2132,7 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 /usr/mingw/include/scardssp.h
 /usr/mingw/include/scesvc.h
 /usr/mingw/include/schannel.h
+/usr/mingw/include/sched.h
 /usr/mingw/include/schedule.h
 /usr/mingw/include/schemadef.h
 /usr/mingw/include/schnlsp.h
@@ -2150,6 +2163,7 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 /usr/mingw/include/securityappcontainer.h
 /usr/mingw/include/securitybaseapi.h
 /usr/mingw/include/sehmap.h
+/usr/mingw/include/semaphore.h
 /usr/mingw/include/sens.h
 /usr/mingw/include/sensapi.h
 /usr/mingw/include/sensevts.h
