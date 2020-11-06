@@ -7,13 +7,13 @@
 %define keepstatic 1
 Name     : mingw-crt
 Version  : 6.0.0
-Release  : 13
+Release  : 14
 URL      : https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source0  : https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
-Source1 : https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
+Source1  : https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
-License  : GPL-2.0 GPL-3.0 LGPL-2.1 MIT
+License  : GPL-2.0 GPL-3.0 LGPL-2.1 MIT ZPL-2.1
 Requires: mingw-crt-bin = %{version}-%{release}
 Requires: mingw-crt-license = %{version}-%{release}
 BuildRequires : mingw-binutils
@@ -49,7 +49,6 @@ Group: Development
 Requires: mingw-crt-bin = %{version}-%{release}
 Provides: mingw-crt-devel = %{version}-%{release}
 Requires: mingw-crt = %{version}-%{release}
-Requires: mingw-crt = %{version}-%{release}
 
 %description dev
 dev components for the mingw-crt package.
@@ -65,6 +64,7 @@ license components for the mingw-crt package.
 
 %prep
 %setup -q -n mingw-w64-v6.0.0
+cd %{_builddir}/mingw-w64-v6.0.0
 %patch1 -p1
 
 %build
@@ -72,14 +72,13 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567433616
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1604706010
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O3 -g -fopt-info-vec "
 unset LDFLAGS
 export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 %configure  --disable-lib32 \
 --host=x86_64-pc-linux \
@@ -106,19 +105,23 @@ DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool" \
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1567433616
+export SOURCE_DATE_EPOCH=1604706010
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mingw-crt
-cp mingw-w64-crt/profile/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-crt_profile_COPYING
-cp mingw-w64-headers/direct-x/COPYING.LIB %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-headers_direct-x_COPYING.LIB
-cp mingw-w64-libraries/libmangle/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-libraries_libmangle_COPYING
-cp mingw-w64-libraries/pseh/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-libraries_pseh_COPYING
-cp mingw-w64-libraries/winstorecompat/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-libraries_winstorecompat_COPYING
-cp mingw-w64-tools/gendef/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-tools_gendef_COPYING
-cp mingw-w64-tools/genidl/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-tools_genidl_COPYING
-cp mingw-w64-tools/genlib/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-tools_genlib_COPYING
-cp mingw-w64-tools/genpeimg/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-tools_genpeimg_COPYING
-cp mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/mingw-w64-tools_genstubdll_COPYING
+cp %{_builddir}/mingw-w64-v6.0.0/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/ca7a993958b886d2435da65fe6996b89e57e8354
+cp %{_builddir}/mingw-w64-v6.0.0/COPYING.MinGW-w64/COPYING.MinGW-w64.txt %{buildroot}/usr/share/package-licenses/mingw-crt/5ce7fd3afd927fd1ea74f96d0731e12849ad3629
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-crt/profile/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/74a8a6531a42e124df07ab5599aad63870fa0bd4
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-crt/profile/CYGWIN_LICENSE %{buildroot}/usr/share/package-licenses/mingw-crt/91b920f863846a77227e9ac4bb6c505b81a73bc6
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-headers/direct-x/COPYING.LIB %{buildroot}/usr/share/package-licenses/mingw-crt/01a6b4bf79aca9b556822601186afab86e8c4fbf
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-libraries/libmangle/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/314356c31702bbac16da2d8536e6b8348f27933e
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-libraries/pseh/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/281da0ac11eab086f2acee4d8270b07b6e3da0be
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-libraries/winpthreads/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/107213526be152ad43a78fcf38b067629fd82782
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-libraries/winstorecompat/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/ac5cfbf864bd05601cb16352c1e1496b7a502d6a
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-tools/gendef/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-tools/genidl/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-tools/genlib/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-tools/genpeimg/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/mingw-w64-v6.0.0/mingw-w64-tools/genstubdll/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 %make_install
 ## install_append content
 mkdir -p %{buildroot}/usr/mingw/lib
@@ -2534,13 +2537,13 @@ for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/mingw-crt/mingw-w64-crt_profile_COPYING
-/usr/share/package-licenses/mingw-crt/mingw-w64-headers_direct-x_COPYING.LIB
-/usr/share/package-licenses/mingw-crt/mingw-w64-libraries_libmangle_COPYING
-/usr/share/package-licenses/mingw-crt/mingw-w64-libraries_pseh_COPYING
-/usr/share/package-licenses/mingw-crt/mingw-w64-libraries_winstorecompat_COPYING
-/usr/share/package-licenses/mingw-crt/mingw-w64-tools_gendef_COPYING
-/usr/share/package-licenses/mingw-crt/mingw-w64-tools_genidl_COPYING
-/usr/share/package-licenses/mingw-crt/mingw-w64-tools_genlib_COPYING
-/usr/share/package-licenses/mingw-crt/mingw-w64-tools_genpeimg_COPYING
-/usr/share/package-licenses/mingw-crt/mingw-w64-tools_genstubdll_COPYING
+/usr/share/package-licenses/mingw-crt/01a6b4bf79aca9b556822601186afab86e8c4fbf
+/usr/share/package-licenses/mingw-crt/107213526be152ad43a78fcf38b067629fd82782
+/usr/share/package-licenses/mingw-crt/281da0ac11eab086f2acee4d8270b07b6e3da0be
+/usr/share/package-licenses/mingw-crt/314356c31702bbac16da2d8536e6b8348f27933e
+/usr/share/package-licenses/mingw-crt/5ce7fd3afd927fd1ea74f96d0731e12849ad3629
+/usr/share/package-licenses/mingw-crt/74a8a6531a42e124df07ab5599aad63870fa0bd4
+/usr/share/package-licenses/mingw-crt/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+/usr/share/package-licenses/mingw-crt/91b920f863846a77227e9ac4bb6c505b81a73bc6
+/usr/share/package-licenses/mingw-crt/ac5cfbf864bd05601cb16352c1e1496b7a502d6a
+/usr/share/package-licenses/mingw-crt/ca7a993958b886d2435da65fe6996b89e57e8354
