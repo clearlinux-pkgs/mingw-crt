@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : mingw-crt
 Version  : 6.0.0
-Release  : 14
+Release  : 15
 URL      : https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source0  : https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2
 Source1  : https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v6.0.0.tar.bz2.asc
@@ -72,7 +72,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1604706010
+export SOURCE_DATE_EPOCH=1604810881
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O3 -g -fopt-info-vec "
 unset LDFLAGS
@@ -105,7 +105,7 @@ DLLTOOL="/usr/bin/x86_64-w64-mingw32-dlltool" \
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1604706010
+export SOURCE_DATE_EPOCH=1604810881
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mingw-crt
 cp %{_builddir}/mingw-w64-v6.0.0/COPYING %{buildroot}/usr/share/package-licenses/mingw-crt/ca7a993958b886d2435da65fe6996b89e57e8354
@@ -128,6 +128,8 @@ mkdir -p %{buildroot}/usr/mingw/lib
 mv %{buildroot}/usr/lib/*.a  %{buildroot}/usr/mingw/lib
 mv %{buildroot}/usr/lib/*.o  %{buildroot}/usr/mingw/lib
 for i in %{buildroot}/usr/mingw/lib/*.a; do /usr/bin/x86_64-w64-mingw32-ranlib $i ; done
+# brp-strip-static-lto does not yet support MinGW static libraries, so skip for now
+for i in %{buildroot}/usr/mingw/lib/*.a; do touch $i.no-strip-lto; done
 ## install_append end
 
 %files
